@@ -16,7 +16,7 @@ namespace BazarStore
     public partial class BazarEntities : DbContext
     {
         public BazarEntities()
-            : base("name=BazarEntities")
+            : base("BazarEntities")
         {
         }
     

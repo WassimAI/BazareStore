@@ -1,23 +1,26 @@
-﻿@model BazarStore.Areas.Admin.Models.CategoryVM
+﻿@model BazarStore.Category
 
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Add New Category</h2>
+<h3 class="alert alert-primary">Add New Category</h3>
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">@TempData["success"]</div>
+}
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Category", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
         <div class="form-group">
-            Name
+            @Html.Label("Name", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
@@ -25,17 +28,18 @@
         </div>
 
         <div class="form-group">
-            Description
+            @Html.Label("Description", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            Upload Image
-            <div class="col-md-10">
-                <input type="file" />
+            @Html.Label("Add Image", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                <input type="file" name="file" id="imageUpload" />
+                <img id="imgPreview" src="~/Images/preview_default.png" width="100" height="100" />
             </div>
         </div>
 
@@ -48,9 +52,36 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "GetCategories", "Category")
+    @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-}
+
+        <script>
+
+        $(function () {
+            /*
+            *Preview Selected Image
+            */
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $("img#imgPreview").attr("src", e.target.result).width(200).height(200);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#imageUpload").change(function () {
+                readURL(this);
+            });
+
+        });
+
+        </script>
+    }
