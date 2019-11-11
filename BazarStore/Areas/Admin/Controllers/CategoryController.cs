@@ -49,6 +49,12 @@ namespace BazarStore.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Category model, HttpPostedFileBase file)
         {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Please fill in the required fields below");
+                return View(model);
+            }
+
             if (ModelState.IsValid)
             {
                 Category newCategory = new Category()
@@ -60,16 +66,20 @@ namespace BazarStore.Areas.Admin.Controllers
                 db.Categories.Add(newCategory);
                 db.SaveChanges();
 
-                if(ImageProcessor.SaveImage(newCategory.CategoryID, file, "Categories"))
+                if(file !=null && file.ContentLength > 0)
                 {
-                    newCategory.ImageUrl = file.FileName;
-                    db.SaveChanges();
+                    if (ImageProcessor.SaveImage(newCategory.CategoryID, file, "Categories"))
+                    {
+                        newCategory.ImageUrl = file.FileName;
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Sorry, the Image was not uploaded, please check the file type");
+                        return View(model);
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Sorry, the Image was not uploaded, please check the file type");
-                    return View(model);
-                }
+                
 
                 TempData["success"] = "Product Created Successfully";
                 return RedirectToAction("Create");
@@ -98,15 +108,40 @@ namespace BazarStore.Areas.Admin.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Category category)
+        public ActionResult Edit(Category model, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(category).State = EntityState.Modified;
+                Category categoryToChange = db.Categories.Find(model.CategoryID);
+                categoryToChange.CategoryName = model.CategoryName;
+                categoryToChange.Description = model.Description;
+
+                if (!String.IsNullOrWhiteSpace(categoryToChange.ImageUrl))
+                {
+                    ImageProcessor.DeleteImage(categoryToChange.CategoryID, "Categories");
+                }
+
+                if(file != null && file.ContentLength > 0)
+                {
+                    if (ImageProcessor.SaveImage(categoryToChange.CategoryID, file, "Categories"))
+                    {
+                        categoryToChange.ImageUrl = file.FileName;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Image type is wrong, please upload correct image");
+                        return View(model);
+                    }
+                }
+                
+
                 db.SaveChanges();
+
+                TempData["success"] = "Category: " + categoryToChange.CategoryName + " is updated successfully";
+
                 return RedirectToAction("Index");
             }
-            return View(category);
+            return View(model);
         }
 
         // GET: Admin/Category/Delete/5
@@ -132,6 +167,8 @@ namespace BazarStore.Areas.Admin.Controllers
             Category category = db.Categories.Find(id);
             db.Categories.Remove(category);
             db.SaveChanges();
+            ImageProcessor.DeleteImage(id, "Categories");
+            TempData["success"] = "Category: " + category.CategoryName + " is successfully removed";
             return RedirectToAction("Index");
         }
 

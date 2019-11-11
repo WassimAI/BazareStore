@@ -5,14 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2 class="alert alert-primary">Category Details</h2>
 
 <div>
-    <h4>Category</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.CategoryName)
+            Name
         </dt>
 
         <dd>
@@ -20,7 +18,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            Description
         </dt>
 
         <dd>
@@ -28,16 +26,16 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ImageUrl)
+            Image
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ImageUrl)
+            <img src="~/Images/Uploads/Categories/@Model.CategoryID/@Model.ImageUrl" height="100" width="100" />
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.CategoryID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CategoryID }, new { @class = "btn btn-warning btn-sm" })
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary btn-sm" })
 </p>

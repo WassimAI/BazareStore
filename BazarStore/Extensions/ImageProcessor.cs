@@ -71,5 +71,14 @@ namespace BazarStore.Extensions
 
             return true;
         }
+
+        public static void DeleteImage(int id, string folderName)
+        {
+            var originalDirectory = new DirectoryInfo(string.Format("{0}Images\\Uploads", HttpContext.Current.Server.MapPath(@"\")));
+            string pathString = Path.Combine(originalDirectory.ToString(), folderName + "\\" + id.ToString());
+
+            if (Directory.Exists(pathString))
+                Directory.Delete(pathString, true);
+        }
     }
 }

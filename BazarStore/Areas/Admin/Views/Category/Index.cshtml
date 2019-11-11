@@ -7,8 +7,13 @@
 
 <h3 class="alert alert-primary">All Categories</h3>
 
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">@TempData["success"]</div>
+}
+
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add new Category", "Create", null ,new { @class="btn btn-primary"})
 </p>
 <table class="table">
     <tr>
@@ -33,7 +38,7 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ImageUrl)
+            <img src="~/Images/Uploads/Categories/@item.CategoryID/@item.ImageUrl" height="50" width="50"/>
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.CategoryID }) |
