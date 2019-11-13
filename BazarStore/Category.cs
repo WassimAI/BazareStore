@@ -11,8 +11,7 @@ namespace BazarStore
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Category
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,11 +19,9 @@ namespace BazarStore
         {
             this.Products = new HashSet<Product>();
         }
-        
+    
         public int CategoryID { get; set; }
-        [Required]
         public string CategoryName { get; set; }
-        [Required]
         public string Description { get; set; }
         public string ImageUrl { get; set; }
     

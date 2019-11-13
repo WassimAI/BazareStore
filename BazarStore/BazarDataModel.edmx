@@ -97,6 +97,7 @@
           <Property Name="UnitsOnOrder" Type="smallint" />
           <Property Name="ReorderLevel" Type="smallint" />
           <Property Name="Discontinued" Type="bit" Nullable="false" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="Region">
           <Key>
@@ -379,6 +380,7 @@
           <NavigationProperty Name="Category" Relationship="Self.FK_Products_Categories" FromRole="Products" ToRole="Categories" />
           <NavigationProperty Name="Order_Details" Relationship="Self.FK_Order_Details_Products" FromRole="Products" ToRole="Order_Details" />
           <NavigationProperty Name="Supplier" Relationship="Self.FK_Products_Suppliers" FromRole="Products" ToRole="Suppliers" />
+          <Property Name="ImageUrl" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Region">
           <Key>
@@ -644,6 +646,7 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="BazarModel.Product">
               <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
                 <ScalarProperty Name="ProductID" ColumnName="ProductID" />
                 <ScalarProperty Name="ProductName" ColumnName="ProductName" />
                 <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />

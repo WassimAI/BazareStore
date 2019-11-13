@@ -81,7 +81,7 @@ namespace BazarStore.Areas.Admin.Controllers
                 }
                 
 
-                TempData["success"] = "Product Created Successfully";
+                TempData["success"] = "Category Created Successfully";
                 return RedirectToAction("Create");
             }
 
@@ -116,13 +116,10 @@ namespace BazarStore.Areas.Admin.Controllers
                 categoryToChange.CategoryName = model.CategoryName;
                 categoryToChange.Description = model.Description;
 
-                if (!String.IsNullOrWhiteSpace(categoryToChange.ImageUrl))
-                {
-                    ImageProcessor.DeleteImage(categoryToChange.CategoryID, "Categories");
-                }
-
                 if(file != null && file.ContentLength > 0)
                 {
+                    ImageProcessor.DeleteImage(categoryToChange.CategoryID, "Categories");
+
                     if (ImageProcessor.SaveImage(categoryToChange.CategoryID, file, "Categories"))
                     {
                         categoryToChange.ImageUrl = file.FileName;
