@@ -193,6 +193,9 @@ namespace BazarStore.Areas.Admin.Controllers
             Product product = db.Products.Find(id);
             db.Products.Remove(product);
             db.SaveChanges();
+
+            ImageProcessor.DeleteImage(id, "Products");
+            TempData["success"] = "Category: " + product.ProductName + " is successfully removed";
             return RedirectToAction("Index");
         }
 

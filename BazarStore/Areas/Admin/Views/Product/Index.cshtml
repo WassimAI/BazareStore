@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
 <h3 class="alert alert-primary">All Products</h3>
@@ -12,9 +12,10 @@
     <div class="alert alert-success">@TempData["success"]</div>
 }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+    <p>
+        @Html.ActionLink("Add new Product", "Create", null, new { @class = "btn btn-primary" })
+    </p>
+
 <table class="table">
     <tr>
         <th>

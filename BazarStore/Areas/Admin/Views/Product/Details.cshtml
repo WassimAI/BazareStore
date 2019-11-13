@@ -2,14 +2,12 @@
 
 @{
     ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Details</h2>
+<h3 class="alert alert-info">Product Details</h3>
 
 <div>
-    <h4>Product</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.ProductName)
@@ -83,9 +81,16 @@
             @Html.DisplayFor(model => model.Supplier.CompanyName)
         </dd>
 
+        <dt>
+            Product Image
+        </dt>
+        <dd>
+            <img src="~/Images/Uploads/Products/@Model.ProductID/@Model.ImageUrl" height="100" width="100" alt="Product_Image" />
+        </dd>
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductID }, new { @class = "btn btn-warning btn-sm"})
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary btn-sm" })
 </p>
