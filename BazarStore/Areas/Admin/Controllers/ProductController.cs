@@ -20,6 +20,13 @@ namespace BazarStore.Areas.Admin.Controllers
         {
             var products = db.Products.Include(p => p.Category).Include(p => p.Supplier);
             return View(products.ToList());
+            //return PartialView("_GetProductsPartial", products.ToList());
+        }
+
+        public ActionResult GetProductsPartial(string searchText="")
+        {
+            var products = db.Products.Where(x=> x.ProductName.StartsWith(searchText)).Include(p => p.Category).Include(p => p.Supplier);
+            return PartialView("_GetProductsPartial", products.ToList());
         }
 
         // GET: Admin/Product/Details/5
