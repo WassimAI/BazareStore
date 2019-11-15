@@ -5,12 +5,24 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<h3 class="alert alert-primary">All Products<span class="products-count"></span></h3>
+
+<form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2 search-txt" id="search-txt" type="search" placeholder="Search Products" aria-label="Search">
+    @Html.DropDownList("CategoryID", null,"All", htmlAttributes: new { @class = "form-control", @id="CategoryList"})
+    <a class="btn btn-outline-success my-2 my-sm-0 search-btn mx-1" id="search-btn" href="#">Search</a>
+</form>
+
+<p>
+    @Html.ActionLink("Add new Product", "Create", null, new { @class = "btn btn-primary mt-2" })
+</p>
+
 <div class="d-none loader-div text-center">
     <p class="lead">Please wait while data is loading...</p>
     <img src="~/Images/brown_rolling_spinner.gif" />
 </div>
 
-<div class="all-products-table">
+<div class="all-products-table mt-2">
     @Html.Partial("_GetProductsPartial", Model)
 </div>
 
@@ -20,15 +32,31 @@
 
         $(function () {
 
-            /*Loading All Products via Ajax*/
+        /*Loading All Products via Ajax*/
+
+            /*To trigger the btn click on enter press*/
+            $('#search-txt').keypress(function (e) {
+                var key = e.which;
+                if (key == 13)  // the enter key code
+                {
+                    $('#search-btn').click();
+                    return false;
+                }
+            });
+
+            /*Handleing on change event of dropdown*/
+            $("#CategoryList").on("change", function () {
+                $("#search-btn").click();
+            });
 
             $(".search-btn").on("click", function (e) {
                 e.preventDefault();
 
                 var url = "Product/GetProductsPartial";
                 var searchText = $(".search-txt").val();
+                var category = $("#CategoryList").find(":selected").val();
 
-                $.get(url, { searchText: searchText }, function (data) {
+                $.get(url, { searchText: searchText, category: category }, function (data) {
                     $(".all-products-table").html("");
                     $(".loader-div").removeClass("d-none");
                     $(".loader-div").addClass("d-block");

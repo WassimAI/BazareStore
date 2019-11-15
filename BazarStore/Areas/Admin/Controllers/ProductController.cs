@@ -19,14 +19,31 @@ namespace BazarStore.Areas.Admin.Controllers
         public ActionResult Index()
         {
             var products = db.Products.Include(p => p.Category).Include(p => p.Supplier);
+
+            ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName");
+
             return View(products.ToList());
             //return PartialView("_GetProductsPartial", products.ToList());
         }
 
-        public ActionResult GetProductsPartial(string searchText="")
+        public ActionResult GetProductsPartial(string searchText="", int category = 0)
         {
-            var products = db.Products.Where(x=> x.ProductName.StartsWith(searchText)).Include(p => p.Category).Include(p => p.Supplier);
-            return PartialView("_GetProductsPartial", products.ToList());
+            var products = db.Products.AsQueryable();
+
+            //products = db.Products.Include(p => p.Category).Include(p => p.Supplier).ToList();
+
+            if (!String.IsNullOrEmpty(searchText))
+                products = products.Where(x => x.ProductName.StartsWith(searchText));
+
+            if (category!=0)
+            {
+                products = products.Where(x => x.CategoryID == category);
+            }
+                
+
+            ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName");
+
+            return PartialView("_GetProductsPartial", products);
         }
 
         // GET: Admin/Product/Details/5

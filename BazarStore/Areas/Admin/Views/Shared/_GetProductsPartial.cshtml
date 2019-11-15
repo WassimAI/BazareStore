@@ -1,95 +1,103 @@
 ﻿@model IEnumerable<BazarStore.Product>
 
-<h3 class="alert alert-primary">All Products<span class="products-count"></span></h3>
-
 @if (TempData["success"] != null)
 {
     <div class="alert alert-success">@TempData["success"]</div>
 }
-
-<p>
-    @Html.ActionLink("Add new Product", "Create", null, new { @class = "btn btn-primary" })
-</p>
 
 <!--Loader Div-->
 <div class="alert alert-warning d-none loader-div">
     <img src="~/Images/brown_rolling_spinner.gif" />
 </div>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.QuantityPerUnit)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UnitPrice)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UnitsInStock)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UnitsOnOrder)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReorderLevel)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Discontinued)
-        </th>
-        <th>
-            Category
-        </th>
-        <th>
-            Supplier
-        </th>
-        <th>
-            Image
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+@if(Model.Count() == 0)
+{
+    <p class="lead">No items found based on search criteria</p>
+}
+else
+{
+    <table class="table table-striped table-responsive-sm">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuantityPerUnit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitsInStock)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitsOnOrder)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReorderLevel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Discontinued)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
-            </td>
-            <td>
-                <img src="~/Images/Uploads/Products/@item.ProductID/@item.ImageUrl" height="50" width="50" alt="@item.ProductName" />
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ProductID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
-            </td>
+            <th>
+                <input type="checkbox" name="selectAll" id="selectAll" />
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuantityPerUnit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitsInStock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitsOnOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReorderLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Discontinued)
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Supplier
+            </th>
+            <th>
+                Image
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" name="selectedProduct" id="selectedProduct" data-id="@item.ProductID" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitsInStock)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UnitsOnOrder)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReorderLevel)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Discontinued)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
+                </td>
+                <td>
+                    <img src="~/Images/Uploads/Products/@item.ProductID/@item.ImageUrl" height="50" width="50" alt="@item.ProductName" />
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ProductID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ProductID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+
