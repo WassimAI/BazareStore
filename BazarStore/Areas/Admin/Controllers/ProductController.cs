@@ -33,7 +33,7 @@ namespace BazarStore.Areas.Admin.Controllers
             //products = db.Products.Include(p => p.Category).Include(p => p.Supplier).ToList();
 
             if (!String.IsNullOrEmpty(searchText))
-                products = products.Where(x => x.ProductName.StartsWith(searchText));
+                products = products.Where(x => x.ProductName.Contains(searchText));
 
             if (category!=0)
             {
@@ -221,6 +221,27 @@ namespace BazarStore.Areas.Admin.Controllers
             ImageProcessor.DeleteImage(id, "Products");
             TempData["success"] = "Category: " + product.ProductName + " is successfully removed";
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        //POST: Admin/Product/DeleteProducts
+        public JsonResult DeleteProducts(int[] ids)
+        {
+            var listToDelete = db.Products.Where(x => ids.Contains(x.ProductID)).ToList();
+            foreach(var product in listToDelete)
+            {
+                db.Products.Remove(product);
+            }
+            try
+            {
+                db.SaveChanges();
+                return Json(new { response = "Ok" });
+            }
+            catch
+            {
+                return Json(new { response = "No" });
+            }
+            
         }
 
         protected override void Dispose(bool disposing)

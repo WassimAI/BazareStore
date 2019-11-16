@@ -9,13 +9,16 @@
 
 <form class="form-inline my-2 my-lg-0">
     <input class="form-control mr-sm-2 search-txt" id="search-txt" type="search" placeholder="Search Products" aria-label="Search">
-    @Html.DropDownList("CategoryID", null,"All", htmlAttributes: new { @class = "form-control", @id="CategoryList"})
+    @Html.DropDownList("CategoryID", null, "All", htmlAttributes: new { @class = "form-control", @id = "CategoryList" })
     <a class="btn btn-outline-success my-2 my-sm-0 search-btn mx-1" id="search-btn" href="#">Search</a>
 </form>
 
-<p>
-    @Html.ActionLink("Add new Product", "Create", null, new { @class = "btn btn-primary mt-2" })
-</p>
+<div class="d-inline-block btn-div">
+    <p>
+        @Html.ActionLink("Add new Product", "Create", null, new { @class = "btn btn-primary mt-2" })
+        <a class="btn btn-danger mt-2 btn-delete d-none" href="#">Delete Selected</a>
+    </p>
+</div>
 
 <div class="d-none loader-div text-center">
     <p class="lead">Please wait while data is loading...</p>
@@ -32,8 +35,6 @@
 
         $(function () {
 
-        /*Loading All Products via Ajax*/
-
             /*To trigger the btn click on enter press*/
             $('#search-txt').keypress(function (e) {
                 var key = e.which;
@@ -49,7 +50,8 @@
                 $("#search-btn").click();
             });
 
-            $(".search-btn").on("click", function (e) {
+            //Ajax loading products
+            $("body").on("click", ".search-btn", function (e) {
                 e.preventDefault();
 
                 var url = "Product/GetProductsPartial";
@@ -65,9 +67,63 @@
                         $(".loader-div").removeClass("d-block");
                         $(".loader-div").addClass("d-none");
                     }, 2000);
+                }).done(function () {
+                    if ($(this).prop("checked"))
+                        $("a.btn-delete").removeClass("d-none");
+                    else
+                        $("a.btn-delete").addClass("d-none");
                 });
-
             });
+
+
+            /*Select All Checkbox*/
+
+            $("body").on("click","#selectAll", function () {
+                $("input:checkbox.selectedProduct").not(this).prop('checked', this.checked);
+                if ($(this).prop("checked"))
+                    $("a.btn-delete").removeClass("d-none");
+                else
+                    $("a.btn-delete").addClass("d-none");
+            });
+
+            $("body").on("click", ".selectedProduct", function () {
+                //$("a.btn-delete").removeClass("d-none");
+                if ($("input[name='selectedProduct']:checked").length > 0)
+                    $("a.btn-delete").removeClass("d-none");
+                else
+                    $("a.btn-delete").addClass("d-none");
+            });
+
+            /*gathering all checked ids*/
+            $("body").on("click","a.btn-delete", function () {
+                var ids = [];
+
+                $.each($("input[name='selectedProduct']:checked"), function () {
+                    ids.push($(this).data("id"));
+                });
+                //alert(ids);
+            /*Deleting Multiple Products*/
+                var url = "Product/DeleteProducts";
+
+                $.post(url, { ids: ids }, function (data) {
+                    if (data.response == "Ok") {
+                        $(".all-products-table").html("");
+                        $(".loader-div").removeClass("d-none");
+                        $(".loader-div").addClass("d-block");
+
+                        $(".search-txt").val("");
+                        $("#CategoryList").find(":selected").val(0);
+                        $("#CategoryList").find(":selected").text("All");
+                        $("#search-btn").click();
+                    } else {
+                        alert("Cannot delete Products!");
+                    }
+                });
+            });
+
+        
+
+            
 
         });
 
