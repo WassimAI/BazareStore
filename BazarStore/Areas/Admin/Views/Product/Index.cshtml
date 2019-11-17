@@ -5,7 +5,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h3 class="alert alert-primary">All Products<span class="products-count"></span></h3>
+<h3 class="alert alert-primary">All Products<span class="products-count lead">@ViewBag.ProductCount Products in total</span></h3>
 
 <form class="form-inline my-2 my-lg-0">
     <input class="form-control mr-sm-2 search-txt" id="search-txt" type="search" placeholder="Search Products" aria-label="Search">
@@ -118,6 +118,8 @@
                     } else {
                         alert("Cannot delete Products!");
                     }
+                }).done(function () {
+                    toastr.success("Product(s) have been deleted");
                 });
             });
 

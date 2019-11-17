@@ -2,38 +2,76 @@
 @{
     ViewBag.Title = "all-products";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int count = 0;
 }
 
 <h2 class="display-3">All Products</h2>
-<hr />
 
-@foreach (var item in Model)
-{
-    if ((count % 4) == 0)
-    {
-        @:<div class="row">
-        }
-        <div class="col-md-3 col-sm-12 mb-4 mb-lg-2">
-            <div class="card text-center">
-                <img src="~/Images/Uploads/Products/@item.ProductID/@item.ImageUrl" class="card-img-top" alt="@item.ProductName">
-                <div class="card-body">
-                    <h5 class="card-title">@item.ProductName</h5>
-                    <h6>$@item.UnitPrice</h6>
-                    <a href="#" data-id="@item.ProductID" class="btn btn-primary">Add To Cart</a>
-                </div>
-            </div>
-        </div>
+<form class="form-inline my-2 my-lg-0">
+    <label name="CategoryLabel mx-2" class="control-label">Search by Category: </label>
+    @Html.DropDownList("CategoryID", null, "All", htmlAttributes: new { @class = "form-control", @id = "CategoryList" })
+</form>
 
-        if (count == 3)
-        {
-            count = 0;
-        @:</div>
-    }
-    else
-    {
-        count++;
-    }
+<div class="d-none loader-div text-center">
+    <p class="lead">Please wait while data is loading...</p>
+    <img src="~/Images/brown_rolling_spinner.gif" />
+</div>
 
+<div class="all-products-table mt-3">
+    @Html.Partial("_GetProductsPartial", Model)
+</div>
+
+
+@section Scripts{
+
+    <script>
+
+        $(function () {
+
+        /*To trigger the btn click on enter press*/
+            //$("body").on("keypress", "nav #search-txt", function(e){
+            //    var key = e.which;
+            //    if (key == 13)  // the enter key code
+            //    {
+            //        $('#search-btn').click();
+            //        return false;
+            //    }
+            //});
+            //$('#search-txt').keypress(function (e) {
+            //    var key = e.which;
+            //    if (key == 13)  // the enter key code
+            //    {
+            //        $('#search-btn').click();
+            //        return false;
+            //    }
+            //});
+
+            /*Handleing on change event of dropdown*/
+            $("#CategoryList").on("change", function () {
+                $("#search-btn").click();
+            });
+
+            //Ajax loading products
+            $("body").on("click", ".search-btn", function (e) {
+                e.preventDefault();
+
+                var url = "GetProductsPartial";
+                var searchText = $(".search-txt").val();
+                var category = $("#CategoryList").find(":selected").val();
+
+                $.get(url, { searchText: searchText, category: category }, function (data) {
+                    $(".all-products-table").html("");
+                    $(".loader-div").removeClass("d-none");
+                    $(".loader-div").addClass("d-block");
+                    setTimeout(function () {
+                        $(".all-products-table").html(data);
+                        $(".loader-div").removeClass("d-block");
+                        $(".loader-div").addClass("d-none");
+                    }, 2000);
+                });
+            });
+
+
+        });
+    </script>    
 }
 
