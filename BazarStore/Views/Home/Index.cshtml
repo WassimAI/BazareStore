@@ -1,5 +1,8 @@
-﻿@{
+﻿@model BazarStore.Models.HomePageVM
+
+@{
     ViewBag.Title = "Home Page";
+    int i = 0;
 }
 
 <div class="jumbotron mt-5 home-jumbotron">
@@ -28,4 +31,55 @@
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
+</div>
+
+<div class="row text-center categories-title-home mb-3">
+    <div class="col">
+        <h3>Our Categories</h3>
+    </div>
+</div>
+
+<!--Categories Carousel-->
+<div class="row">
+    <div class="col"></div>
+    <div class="col-md-8 col-sm-12">
+
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+            <ol class="carousel-indicators">
+                @for (int j = 0; j < Model.Categories.Count(); j++)
+                {
+                    var indicatorclass = j == 0 ? "class=active" : "";
+
+                    <li data-target="#carouselExampleIndicators" data-slide-to="@j" @indicatorclass></li>
+                }
+            </ol>
+            <div class="carousel-inner">
+                @foreach (var item in Model.Categories)
+                {
+                    var itemclass = i++ == 0 ? "carousel-item active" : "carousel-item";
+
+                    <div class="@itemclass">
+                        <a href="#"><img src="~/Images/Uploads/Categories/@item.CategoryID/@item.ImageUrl" class="d-block w-100" alt="@item.CategoryName"></a>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>@item.CategoryName</h5>
+                            <p>@item.Description</p>
+                        </div>
+                    </div>
+
+                }
+            </div>
+
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+
+        </div>
+    </div>
+    <div class="col"></div>
 </div>

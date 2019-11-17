@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BazarStore.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +9,16 @@ namespace BazarStore.Controllers
 {
     public class HomeController : Controller
     {
+        private BazarEntities db = new BazarEntities();
+
         public ActionResult Index()
         {
-            return View();
+            var model = new HomePageVM
+            {
+                Categories = db.Categories.ToList()
+            };
+
+            return View(model);
         }
 
         public ActionResult About()

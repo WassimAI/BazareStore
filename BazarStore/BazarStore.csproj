@@ -185,6 +185,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="BazarDataModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -217,6 +218,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\HomePageVM.cs" />
     <Compile Include="Order.cs">
       <DependentUpon>BazarDataModel.tt</DependentUpon>
     </Compile>
@@ -254,6 +256,8 @@
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Images\brown_rolling_spinner.gif" />
     <Content Include="Images\hero-small.jpg" />
+    <Content Include="Images\nat-2-large.jpg" />
+    <Content Include="Images\nat-3-large.jpg" />
     <Content Include="Images\preview_default.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -307,6 +311,7 @@
     <Content Include="Areas\Admin\Views\Shared\_GetProductsPartial.cshtml" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -359,7 +364,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

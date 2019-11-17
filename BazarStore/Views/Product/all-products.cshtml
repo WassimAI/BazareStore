@@ -7,8 +7,9 @@
 <h2 class="display-3">All Products</h2>
 
 <form class="form-inline my-2 my-lg-0">
-    <label name="CategoryLabel mx-2" class="control-label">Search by Category: </label>
+    <input class="form-control mr-sm-2 search-txt" id="search-txt" type="search" placeholder="Search Products" aria-label="Search">
     @Html.DropDownList("CategoryID", null, "All", htmlAttributes: new { @class = "form-control", @id = "CategoryList" })
+    <a class="btn btn-outline-success my-2 my-sm-0 search-btn mx-1" id="search-btn" href="#">Search</a>
 </form>
 
 <div class="d-none loader-div text-center">
@@ -28,22 +29,15 @@
         $(function () {
 
         /*To trigger the btn click on enter press*/
-            //$("body").on("keypress", "nav #search-txt", function(e){
-            //    var key = e.which;
-            //    if (key == 13)  // the enter key code
-            //    {
-            //        $('#search-btn').click();
-            //        return false;
-            //    }
-            //});
-            //$('#search-txt').keypress(function (e) {
-            //    var key = e.which;
-            //    if (key == 13)  // the enter key code
-            //    {
-            //        $('#search-btn').click();
-            //        return false;
-            //    }
-            //});
+
+            $('#search-txt').keypress(function (e) {
+                var key = e.which;
+                if (key == 13)  // the enter key code
+                {
+                    $('#search-btn').click();
+                    return false;
+                }
+            });
 
             /*Handleing on change event of dropdown*/
             $("#CategoryList").on("change", function () {

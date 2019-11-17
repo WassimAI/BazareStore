@@ -44,7 +44,9 @@ namespace BazarStore
         public Nullable<short> ReorderLevel { get; set; }
         public bool Discontinued { get; set; }
         public string ImageUrl { get; set; }
-    
+
+        public string ShortName { get { return ProductName.Length < 11 ? ProductName : ProductName.Substring(0, 10) + "..."; } }
+
         public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order_Detail> Order_Details { get; set; }
