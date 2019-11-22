@@ -21,12 +21,15 @@ namespace BazarStore
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/toastr.js"));
+                      "~/Scripts/toastr.js",
+                      "~/Scripts/dropzone/dropzone.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/toastr.css"));
+                      "~/Content/toastr.css",
+                      "~/Scripts/dropzone/dropzone.css",
+                      "~/Scripts/dropzone/basic.css"));
         }
     }
 }

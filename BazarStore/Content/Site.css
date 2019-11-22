@@ -2,6 +2,11 @@
     background-image: linear-gradient(to right, rgba(126, 213, 111, 0.5), rgba(40, 180, 133, 0.7)), url("../Images/hero-small.jpg");
 }
 
-.categories-title-home {
+.title-gradient-green {
     background-image: linear-gradient(to right, rgba(126, 213, 111, 0.5), rgba(40, 180, 133, 0.7));
 }
+
+/*.carousel-inner {
+    width: 250px;
+    height: 250px;
+}*/

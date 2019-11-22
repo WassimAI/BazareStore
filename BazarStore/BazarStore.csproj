@@ -263,6 +263,10 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\dropzone\basic.css" />
+    <Content Include="Scripts\dropzone\dropzone-amd-module.js" />
+    <Content Include="Scripts\dropzone\dropzone.css" />
+    <Content Include="Scripts\dropzone\dropzone.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -360,6 +364,8 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Product\all-products.cshtml" />
     <Content Include="Views\Product\_GetProductsPartial.cshtml" />
+    <Content Include="Views\Product\product-details.cshtml" />
+    <Content Include="Views\Product\_GetProductDetailsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

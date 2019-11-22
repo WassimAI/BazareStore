@@ -19,6 +19,8 @@ namespace BazarStore
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 new[] { "BazarStore.Controllers" }
             );
+
+            //routes.MapRoute("ProductDetail", "Product/ProductDetails/{name}", new { controller = "Product", action = "ProductDetails" });
         }
     }
 }

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using BazarStore;
 using BazarStore.Extensions;
@@ -144,6 +146,13 @@ namespace BazarStore.Areas.Admin.Controllers
             }
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", product.CategoryID);
             ViewBag.SupplierID = new SelectList(db.Suppliers, "SupplierID", "CompanyName", product.SupplierID);
+
+            //For dropzone
+            ViewBag.productID = id;
+
+            product.GalleryImages = Directory.EnumerateFiles(Server.MapPath("~/Images/Uploads/Products/" + id + "/Gallery/Thumbs"))
+                .Select(fn => Path.GetFileName(fn));
+
             return View(product);
         }
 
@@ -242,6 +251,69 @@ namespace BazarStore.Areas.Admin.Controllers
                 return Json(new { response = "No" });
             }
             
+        }
+
+        // POST: Admin/Product/SaveGalleryImages
+        [HttpPost]
+        public void SaveGalleryImages(int id)
+        {
+            // Loop through files
+            foreach (string fileName in Request.Files)
+            {
+                // Init the file
+                HttpPostedFileBase file = Request.Files[fileName];
+
+                // Check it's not null
+                if (file != null && file.ContentLength > 0)
+                {
+                    // Set directory paths
+                    var originalDirectory = new DirectoryInfo(string.Format("{0}Images\\Uploads", Server.MapPath(@"\")));
+
+                    string pathString1 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Gallery");
+                    string pathString2 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Gallery\\Thumbs");
+
+                    //if (!Directory.Exists(pathString1))
+                    //    Directory.CreateDirectory(pathString1);
+
+                    //if (!Directory.Exists(pathString2))
+                    //    Directory.CreateDirectory(pathString2);
+
+                    // Set image paths
+                    var path = string.Format("{0}\\{1}", pathString1, file.FileName);
+                    var path2 = string.Format("{0}\\{1}", pathString2, file.FileName);
+
+                    // Save original and thumb
+
+                    file.SaveAs(path);
+                    WebImage img = new WebImage(file.InputStream);
+                    img.Resize(150, 150);
+                    img.Save(path2);
+                }
+
+            }
+
+        }
+
+        // POST: Admin/Product/DeleteImage
+        [HttpPost]
+        public void DeleteImage(int id, string imageName)
+        {
+            string fullPath1 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/Gallery/" + imageName);
+            string fullPath2 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/Gallery/Thumbs/" + imageName);
+            string fullPath3 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/" + imageName);
+            string fullPath4 = Request.MapPath("~/Images/Uploads/Products/" + id.ToString() + "/Thumbs/" + imageName);
+
+            if (System.IO.File.Exists(fullPath1))
+                System.IO.File.Delete(fullPath1);
+
+            if (System.IO.File.Exists(fullPath2))
+                System.IO.File.Delete(fullPath2);
+
+            if (System.IO.File.Exists(fullPath3))
+                System.IO.File.Delete(fullPath3);
+
+            if (System.IO.File.Exists(fullPath4))
+                System.IO.File.Delete(fullPath4);
         }
 
         protected override void Dispose(bool disposing)
