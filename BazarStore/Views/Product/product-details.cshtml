@@ -9,4 +9,17 @@
     @Html.Partial("_GetProductDetailsPartial", Model)
 </div>
 
+@section Scripts {
+    
+    <script>
+        $(function () {
 
+            $("body").on("click", "#modal-link-open", function (e) {
+                e.preventDefault();
+
+                $("#carousel-modal").modal("show");
+            });
+        });
+    </script>
+    
+}

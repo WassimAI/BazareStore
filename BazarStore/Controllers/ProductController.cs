@@ -67,6 +67,10 @@ namespace BazarStore.Controllers
                 return HttpNotFound("Sorry, the product you are seeking does not exist");
             }
 
+            product.GalleryImages = Directory.EnumerateFiles(Server.MapPath("~/Images/Uploads/Products/" + id + "/Gallery/Thumbs"))
+                .Select(fn => Path.GetFileName(fn));
+
+
             return PartialView("_GetProductDetailsPartial", product);
         }
     }
